@@ -44,22 +44,28 @@ let GithubIntegrationService = class GithubIntegrationService {
             },
         });
     }
+    async getAllFilesPullRequest(_pull_number, _repo_name) {
+        return await this.octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}/files', {
+            owner: 'philips-emr',
+            repo: _repo_name,
+            pull_number: _pull_number,
+            headers: {
+                'X-GitHub-Api-Version': '2022-11-28',
+            },
+        });
+    }
     async getAllBranches(_nameRepo) {
-        if (this.listBranchs.length == 0) {
-            for (let index = 1; index < 10; index++) {
-                await this.getBranchesGitHub(index, _nameRepo).then((sucess) => {
-                    if (sucess.data.length > 0) {
-                        this.listBranchs = this.listBranchs.concat(sucess.data);
-                    }
-                }, (erro) => {
-                    console.log(erro);
-                });
-            }
-            return this.listBranchs;
+        this.listBranchs = [];
+        for (let index = 1; index < 10; index++) {
+            await this.getBranchesGitHub(index, _nameRepo).then((sucess) => {
+                if (sucess.data.length > 0) {
+                    this.listBranchs = this.listBranchs.concat(sucess.data);
+                }
+            }, (erro) => {
+                console.log(erro);
+            });
         }
-        else {
-            return this.listBranchs;
-        }
+        return this.listBranchs;
     }
     async createPullRequestitHub(_branchCommitsname, _repo_name) {
         return await this.octokit.request('POST /repos/{owner}/{repo}/pulls', {

@@ -31,7 +31,7 @@ let OracledbService = class OracledbService {
         try {
             return await this.connectionOracleCorpService
                 .getConnectOracleCorp()
-                .query(querys_1.Querys.ALL_SO_COPR, [_OrdenService]);
+                .query(querys_1.Querys.ALL_OS_ANALISE_DEFEITO, [_OrdenService]);
         }
         catch (error) {
             console.error(error);

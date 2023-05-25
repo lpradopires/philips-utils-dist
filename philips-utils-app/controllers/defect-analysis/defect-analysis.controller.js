@@ -15,14 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefectAnalysisController = void 0;
 const common_1 = require("@nestjs/common");
 const querysDefeitosAnalise_1 = require("../../enums/querysDefeitosAnalise");
+const github_integration_service_1 = require("../../services/github-integration/github-integration.service");
 const oracledb_service_1 = require("../../services/oracledb-corp/oracledb.service");
 const oracledb_wheb_service_1 = require("../../services/oracledb-wheb/oracledb-wheb.service");
 const time_service_1 = require("../../services/time/time.service");
 let DefectAnalysisController = class DefectAnalysisController {
-    constructor(oracledbService, timeService, oracledbWhebService) {
+    constructor(oracledbService, timeService, oracledbWhebService, githubIntegrationService) {
         this.oracledbService = oracledbService;
         this.timeService = timeService;
         this.oracledbWhebService = oracledbWhebService;
+        this.githubIntegrationService = githubIntegrationService;
     }
     getAllOsPrOpen(_params) {
         const params = JSON.parse(_params.value);
@@ -67,6 +69,41 @@ let DefectAnalysisController = class DefectAnalysisController {
             await this.oracledbWhebService.getAllRealeseOrdemService(params.ordem);
         return paramRet;
     }
+    async getAllFilesPullRequest(_params) {
+        let paramQuery = [];
+        let listPullRequest = [];
+        let filesPullRequest = [];
+        const listFileProjct = {
+            front: [],
+            backend: [],
+            pl_sql: [],
+        };
+        paramQuery = ['tasy', '%' + _params.value + '%'];
+        listPullRequest = await this.getPullRequestVersion(paramQuery);
+        listFileProjct.front = await this.getFilesPullRequest(listPullRequest, filesPullRequest);
+        filesPullRequest = [];
+        paramQuery = ['tasy-backend', '%' + _params.value + '%'];
+        listPullRequest = await this.getPullRequestVersion(paramQuery);
+        listFileProjct.backend = await this.getFilesPullRequest(listPullRequest, filesPullRequest);
+        filesPullRequest = [];
+        paramQuery = ['tasy-plsql', '%' + _params.value + '%'];
+        listPullRequest = await this.getPullRequestVersion(paramQuery);
+        listFileProjct.pl_sql = await this.getFilesPullRequest(listPullRequest, filesPullRequest);
+        return listFileProjct;
+    }
+    async getPullRequestVersion(paramQuery) {
+        return await this.oracledbService.execGenericQueryCorp(querysDefeitosAnalise_1.QuerysDefeitosAnalise.ALL_FILES_PULL_REQUEST, paramQuery);
+    }
+    async getFilesPullRequest(listPullRequest, filesPullRequest) {
+        for (const key in listPullRequest) {
+            if (Object.prototype.hasOwnProperty.call(listPullRequest, key)) {
+                const element = listPullRequest[key];
+                const ret = await this.githubIntegrationService.getAllFilesPullRequest(element.PR_NUMBER, element.DS_PROJETO);
+                filesPullRequest = filesPullRequest.concat(ret.data.map((ele) => ele.filename));
+            }
+        }
+        return filesPullRequest;
+    }
 };
 __decorate([
     (0, common_1.Get)('allosprsopen'),
@@ -96,11 +133,19 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], DefectAnalysisController.prototype, "getOdemService", null);
+__decorate([
+    (0, common_1.Get)('filesPullRequest'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], DefectAnalysisController.prototype, "getAllFilesPullRequest", null);
 DefectAnalysisController = __decorate([
     (0, common_1.Controller)('defect-analysis'),
     __metadata("design:paramtypes", [oracledb_service_1.OracledbService,
         time_service_1.TimeService,
-        oracledb_wheb_service_1.OracledbWhebService])
+        oracledb_wheb_service_1.OracledbWhebService,
+        github_integration_service_1.GithubIntegrationService])
 ], DefectAnalysisController);
 exports.DefectAnalysisController = DefectAnalysisController;
 //# sourceMappingURL=defect-analysis.controller.js.map
