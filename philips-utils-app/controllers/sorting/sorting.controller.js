@@ -17,11 +17,13 @@ const common_1 = require("@nestjs/common");
 const azure_service_1 = require("../../services/azure/azure.service");
 const oracledb_service_1 = require("../../services/oracledb-corp/oracledb.service");
 const settings_service_1 = require("../../services/settings/settings.service");
+const dashboard_service_1 = require("../../services/dashboard/dashboard.service");
 let SortingController = class SortingController {
-    constructor(oracledbService, azureService, settingsService) {
+    constructor(oracledbService, azureService, settingsService, dashboardService) {
         this.oracledbService = oracledbService;
         this.azureService = azureService;
         this.settingsService = settingsService;
+        this.dashboardService = dashboardService;
         this.isCreateCard = false;
         this.isUpdateCard = false;
     }
@@ -58,6 +60,9 @@ let SortingController = class SortingController {
         const { _listAnexos, _listaHistoricos } = await this.azureService.getHistoryAndAttchment(osCorp);
         this.azureService.createItemAzure(osCorp, _listAnexos, _listaHistoricos);
     }
+    async getSoListFromCustomer(nrSeqCliente) {
+        return await this.dashboardService.getSoListFromCustomer(nrSeqCliente);
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -79,11 +84,19 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SortingController.prototype, "createCardAzure", null);
+__decorate([
+    (0, common_1.Get)('/get-so-list/:nrSeqCliente'),
+    __param(0, (0, common_1.Param)('nrSeqCliente')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], SortingController.prototype, "getSoListFromCustomer", null);
 SortingController = __decorate([
     (0, common_1.Controller)('sorting'),
     __metadata("design:paramtypes", [oracledb_service_1.OracledbService,
         azure_service_1.AzureService,
-        settings_service_1.SettingsService])
+        settings_service_1.SettingsService,
+        dashboard_service_1.DashboardService])
 ], SortingController);
 exports.SortingController = SortingController;
 //# sourceMappingURL=sorting.controller.js.map

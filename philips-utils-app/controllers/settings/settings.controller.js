@@ -34,6 +34,10 @@ let SettingsController = class SettingsController {
     async delete(id) {
         return this.settingsService.remove(id);
     }
+    async findSelectedFields(requestData) {
+        const { id, searchingFields } = requestData;
+        return this.settingsService.findSelectedFields(id, searchingFields);
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -63,6 +67,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SettingsController.prototype, "delete", null);
+__decorate([
+    (0, common_1.Post)('findSelectedFields'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SettingsController.prototype, "findSelectedFields", null);
 SettingsController = __decorate([
     (0, common_1.Controller)('settings'),
     __metadata("design:paramtypes", [settings_service_1.SettingsService])

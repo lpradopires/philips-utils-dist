@@ -73,4 +73,19 @@ export declare class GitIntegrationService {
         failed: any;
         sucess?: undefined;
     }>;
+    gitCommit(_nameFolder: any, commitMsg: any): Promise<{
+        sucess: import("simple-git").CommitResult;
+        failed?: undefined;
+    } | {
+        failed: any;
+        sucess?: undefined;
+    }>;
+    gitAddAll(_nameFolder: any): Promise<{
+        sucess: string;
+        failed?: undefined;
+    } | {
+        failed: any;
+        sucess?: undefined;
+    }>;
+    getCurrentBranch(pastaProjeto: any): Promise<string>;
 }

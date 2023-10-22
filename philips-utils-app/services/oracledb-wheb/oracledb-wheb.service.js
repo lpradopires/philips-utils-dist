@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OracledbWhebService = void 0;
 const common_1 = require("@nestjs/common");
+const querys_1 = require("../../enums/querys");
 const connection_oracle_wheb_service_1 = require("../../infrastructure/connection/connection-oracle-wheb/connection-oracle-wheb.service");
 let OracledbWhebService = class OracledbWhebService {
     constructor(connectionOracleWhebService) {
@@ -73,6 +74,69 @@ let OracledbWhebService = class OracledbWhebService {
             return this.connectionOracleWhebService
                 .getConnectOracleWheb()
                 .query(query, []);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getObjectFromVersion(params) {
+        try {
+            const data = await this.connectionOracleWhebService
+                .getConnectOracleWheb()
+                .query(querys_1.Querys.GET_OBJECT_FROM_VERSION, params);
+            if (data) {
+                return data;
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getAllOfficialVersions() {
+        try {
+            return await this.connectionOracleWhebService
+                .getConnectOracleWheb()
+                .query(querys_1.Querys.GET_ALL_OFFICIAL_VERSIONS);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getAllObjects() {
+        try {
+            return await this.connectionOracleWhebService
+                .getConnectOracleWheb()
+                .query(querys_1.Querys.GET_ALL_OBJECTS);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getBlockedVVVersions() {
+        try {
+            return await this.connectionOracleWhebService
+                .getConnectOracleWheb()
+                .query(querys_1.Querys.GET_BLOCKED_VERSIONS);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getCustomersList() {
+        try {
+            return await this.connectionOracleWhebService
+                .getConnectOracleWheb()
+                .query(querys_1.Querys.GET_CUSTOMERS_LIST);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getDocumentedDefDocs(params) {
+        try {
+            return await this.connectionOracleWhebService
+                .getConnectOracleWheb()
+                .query(querys_1.Querys.GET_DOCUMENTED_DOC_DEFECTS, params);
         }
         catch (error) {
             console.error(error);

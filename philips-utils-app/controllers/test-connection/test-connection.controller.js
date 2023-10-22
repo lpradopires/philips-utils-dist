@@ -11,14 +11,74 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TestConnectionController = void 0;
 const common_1 = require("@nestjs/common");
-const github_integration_service_1 = require("../../services/github-integration/github-integration.service");
+const test_connection_service_1 = require("../../services/test-connection/test-connection.service");
 let TestConnectionController = class TestConnectionController {
-    constructor(githubIntegrationService) {
-        this.githubIntegrationService = githubIntegrationService;
+    constructor(testConnectionService) {
+        this.testConnectionService = testConnectionService;
+    }
+    async getStatusDbCorp() {
+        try {
+            const result = await this.testConnectionService.testConnectionCorp();
+            if ((result === null || result === void 0 ? void 0 : result.length) > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (e) {
+            console.log('Erro ao testar conexão com db corp', e);
+        }
+    }
+    async getStatusDbWheb() {
+        try {
+            const result = await this.testConnectionService.testConnectionWheb();
+            if ((result === null || result === void 0 ? void 0 : result.length) > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (e) {
+            console.log('Erro ao testar conexão com db wheb', e);
+        }
+    }
+    async getStatusDbClinical() {
+        try {
+            const result = await this.testConnectionService.testConnectionClinical();
+            if ((result === null || result === void 0 ? void 0 : result.length) > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (e) {
+            console.log('Erro ao testar conexão com db clinical', e);
+        }
     }
     async testeConnctionServices() {
     }
 };
+__decorate([
+    (0, common_1.Get)('db-status-corp'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TestConnectionController.prototype, "getStatusDbCorp", null);
+__decorate([
+    (0, common_1.Get)('db-status-wheb'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TestConnectionController.prototype, "getStatusDbWheb", null);
+__decorate([
+    (0, common_1.Get)('db-status-clinical'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TestConnectionController.prototype, "getStatusDbClinical", null);
 __decorate([
     (0, common_1.Get)('teste'),
     __metadata("design:type", Function),
@@ -27,7 +87,7 @@ __decorate([
 ], TestConnectionController.prototype, "testeConnctionServices", null);
 TestConnectionController = __decorate([
     (0, common_1.Controller)('test-connection'),
-    __metadata("design:paramtypes", [github_integration_service_1.GithubIntegrationService])
+    __metadata("design:paramtypes", [test_connection_service_1.TestConnectionService])
 ], TestConnectionController);
 exports.TestConnectionController = TestConnectionController;
 //# sourceMappingURL=test-connection.controller.js.map

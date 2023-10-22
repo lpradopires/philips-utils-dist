@@ -27,6 +27,15 @@ let SettingsService = class SettingsService {
     findOne(id) {
         return this.settingsRepository.findOneBy({ id });
     }
+    async findSelectedFields(id, fields) {
+        const queryBuilder = this.settingsRepository.createQueryBuilder('repoFieldsQuery').where('repoFieldsQuery.id = :id', { id });
+        queryBuilder.select([]);
+        fields.forEach((field) => {
+            queryBuilder.addSelect(`${field}`);
+        });
+        const result = await queryBuilder.getRawOne();
+        return result;
+    }
     async remove(id) {
         await this.settingsRepository.delete(id);
     }

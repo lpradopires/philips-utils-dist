@@ -40,6 +40,7 @@ let ConnectionOracleWhebService = class ConnectionOracleWhebService {
         };
     }
     getConnectOracleWheb() {
+        this.initConectionOracle();
         return connectionOracle;
     }
 };

@@ -67,28 +67,67 @@ let GithubIntegrationService = class GithubIntegrationService {
         }
         return this.listBranchs;
     }
-    async createPullRequestitHub(_branchCommitsname, _repo_name) {
-        return await this.octokit.request('POST /repos/{owner}/{repo}/pulls', {
-            owner: 'philips-emr',
-            repo: 'tasy-plsql',
-            title: '[SO-3033645] - fix (AtePac_OE): ajuste na suspensao dos horarios das',
-            body: `Tasy HTML5
-              Pull request information
-              Quality Checks
-              What is the feature or problem that this PR address?
-              Evitar erros ao utilizar o JSON para localizador de 3 campos
-              
-              What has been done in the source code to address this?
-              adicionado restrições para quando for localizador de 3 campos alterar os metodos de getValue() e setOpenSelectionFunction()
-              
-              How did you test it?
-              teste locais`,
-            head: 'OS3033645.01.1823',
-            base: '4.01.1823',
-            headers: {
-                'X-GitHub-Api-Version': '2022-11-28',
-            },
-        });
+    async createPullRequest(params) {
+        try {
+            const result = await this.octokit.request('POST /repos/{owner}/{repo}/pulls', params);
+            if (result === null || result === void 0 ? void 0 : result.data) {
+                const pullRequestNumber = result.data.number;
+                const paramsLabel = {
+                    owner: params.owner,
+                    repo: params.repo,
+                    issue_number: pullRequestNumber,
+                    labels: params.labels,
+                };
+                return { sucess: result.data, paramsLabel: paramsLabel };
+            }
+        }
+        catch (e) {
+            return { failed: e };
+        }
+    }
+    async addLabels(paramsLabel) {
+        try {
+            const data = await this.octokit.rest.issues.addLabels(paramsLabel);
+            return { sucess: data };
+        }
+        catch (e) {
+            return { failed: e };
+        }
+    }
+    async addAssignees(params) {
+        try {
+            const data = await this.octokit.request('POST /repos/{owner}/{repo}/issues/{issue_number}/assignees', params);
+            return { sucess: data };
+        }
+        catch (e) {
+            return { failed: e };
+        }
+    }
+    async getLabels(owner, repo) {
+        try {
+            const options = this.octokit.paginate('GET /repos/{owner}/{repo}/labels', {
+                owner: owner,
+                repo: repo,
+                per_page: 100,
+            });
+            return options;
+        }
+        catch (error) {
+            console.error('GitHub API Error:', error.message);
+            throw error;
+        }
+    }
+    async getGitUsernameToFront() {
+        var _a;
+        try {
+            const response = await this.octokit.rest.users.getAuthenticated();
+            if ((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.login) {
+                return response.data;
+            }
+        }
+        catch (e) {
+            console.error('Erro ao buscar usuario github:', e);
+        }
     }
 };
 GithubIntegrationService = __decorate([

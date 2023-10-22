@@ -42,6 +42,16 @@ const test_connection_controller_1 = require("./controllers/test-connection/test
 const oracledb_wheb_service_1 = require("./services/oracledb-wheb/oracledb-wheb.service");
 const github_integration_service_1 = require("./services/github-integration/github-integration.service");
 const defect_analysis_controller_1 = require("./controllers/defect-analysis/defect-analysis.controller");
+const dashboard_controller_1 = require("./controllers/dashboard/dashboard.controller");
+const objects_controller_1 = require("./controllers/consulta-objetos/objects.controller");
+const dic_objetos_service_1 = require("./services/dic-objetos/dic-objetos.service");
+const so_panel_controller_1 = require("./controllers/so-panel/so-panel.controller");
+const defect_docs_controller_1 = require("./controllers/defect-docs/defect-docs.controller");
+const dic_dados_service_1 = require("./services/dic-dados/dic-dados.service");
+const dashboard_service_1 = require("./services/dashboard/dashboard.service");
+const log_system_service_1 = require("./services/log-system/log-system.service");
+const test_connection_service_1 = require("./services/test-connection/test-connection.service");
+const system_logs_controller_1 = require("./controllers/utilities/system-logs/system-logs.controller");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -72,6 +82,11 @@ AppModule = __decorate([
             git_integration_controller_1.GitIntegrationController,
             test_connection_controller_1.TestConnectionController,
             defect_analysis_controller_1.DefectAnalysisController,
+            dashboard_controller_1.DashboardController,
+            objects_controller_1.ObjectsController,
+            so_panel_controller_1.SoPanelController,
+            defect_docs_controller_1.DefectDocsController,
+            system_logs_controller_1.SystemLogsController,
         ],
         providers: [
             app_service_1.AppService,
@@ -94,6 +109,11 @@ AppModule = __decorate([
             connection_oracle_wheb_service_1.ConnectionOracleWhebService,
             oracledb_wheb_service_1.OracledbWhebService,
             github_integration_service_1.GithubIntegrationService,
+            dic_objetos_service_1.DicObjetosService,
+            dashboard_service_1.DashboardService,
+            dic_dados_service_1.DicDadosService,
+            log_system_service_1.LogSystemService,
+            test_connection_service_1.TestConnectionService,
         ],
     })
 ], AppModule);

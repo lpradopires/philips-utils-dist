@@ -9,6 +9,10 @@ export declare class Settings {
     base_dev_pass: string;
     ie_update_card_auto: boolean;
     ie_create_card_auto: boolean;
+    path_frontend: string;
+    path_backend: string;
+    path_plsql: string;
+    path_medicaldevice: string;
     created_at: moment.Moment;
     Updated_at: moment.Moment;
 }

@@ -8,4 +8,9 @@ export declare class OracledbClinicalService {
     saveBacklogClinicalDefDuv(): void;
     saveRecordBacklog(_ret: any): void;
     getAllBacklogChat(): Promise<any>;
+    getLastVersions(): Promise<any>;
+    getParamsObjeto(_nrSeqObjeto: any): Promise<any>;
+    getLogsTable(_nm_table_logs: any): Promise<any>;
+    runExecComand(_dsComand: string): Promise<any>;
+    obterObjetosInvalidos(): Promise<any>;
 }

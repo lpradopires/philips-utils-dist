@@ -51,6 +51,22 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Settings.prototype, "ie_create_card_auto", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Settings.prototype, "path_frontend", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Settings.prototype, "path_backend", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Settings.prototype, "path_plsql", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Settings.prototype, "path_medicaldevice", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Object)
 ], Settings.prototype, "created_at", void 0);

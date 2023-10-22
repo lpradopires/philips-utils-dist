@@ -136,6 +136,34 @@ let GitIntegrationService = class GitIntegrationService {
             return { failed: error };
         }
     }
+    async gitCommit(_nameFolder, commitMsg) {
+        try {
+            const sucess = await this.connectionGitService
+                .getConnectionFolder(_nameFolder)
+                .commit(commitMsg);
+            return { sucess: sucess };
+        }
+        catch (error) {
+            return { failed: error };
+        }
+    }
+    async gitAddAll(_nameFolder) {
+        try {
+            const sucess = await this.connectionGitService
+                .getConnectionFolder(_nameFolder)
+                .raw('add', _nameFolder);
+            return { sucess: sucess || 'Sucesso - Git Add *' };
+        }
+        catch (error) {
+            return { failed: error };
+        }
+    }
+    async getCurrentBranch(pastaProjeto) {
+        const allLocalBranchesList = await this.connectionGitService
+            .getConnectionFolder(pastaProjeto)
+            .branchLocal();
+        return allLocalBranchesList.current;
+    }
 };
 GitIntegrationService = __decorate([
     (0, common_1.Injectable)(),

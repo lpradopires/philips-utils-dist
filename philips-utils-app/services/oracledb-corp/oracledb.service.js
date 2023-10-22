@@ -13,9 +13,11 @@ exports.OracledbService = void 0;
 const common_1 = require("@nestjs/common");
 const querys_1 = require("../../enums/querys");
 const connection_oracle_corp_service_1 = require("../../infrastructure/connection/connection-oracle-corp/connection-oracle-corp.service");
+const connection_oracle_clinical_service_1 = require("../../infrastructure/connection/connection-oracle-clinical/connection-oracle-clinical.service");
 let OracledbService = class OracledbService {
-    constructor(connectionOracleCorpService) {
+    constructor(connectionOracleCorpService, connectionOracleClinicalService) {
         this.connectionOracleCorpService = connectionOracleCorpService;
+        this.connectionOracleClinicalService = connectionOracleClinicalService;
     }
     async getAllOrdensCORP() {
         try {
@@ -128,10 +130,41 @@ let OracledbService = class OracledbService {
             console.error(error);
         }
     }
+    async getLastFiveBranchesSQL(_repo) {
+        try {
+            return await this.connectionOracleClinicalService
+                .getConnectOracleClinical()
+                .query(querys_1.Querys.GET_LAST_FIVE_BRANCHES, [_repo]);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getLastServicePacks() {
+        try {
+            return await this.connectionOracleCorpService
+                .getConnectOracleCorp()
+                .query(querys_1.Querys.GET_LAST_SERVICE_PACKS);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getSoListFromCustomer(nrSeqCliente) {
+        try {
+            return await this.connectionOracleCorpService
+                .getConnectOracleCorp()
+                .query(querys_1.Querys.GET_SO_LIST_FROM_CUSTOMER, [nrSeqCliente]);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 };
 OracledbService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [connection_oracle_corp_service_1.ConnectionOracleCorpService])
+    __metadata("design:paramtypes", [connection_oracle_corp_service_1.ConnectionOracleCorpService,
+        connection_oracle_clinical_service_1.ConnectionOracleClinicalService])
 ], OracledbService);
 exports.OracledbService = OracledbService;
 //# sourceMappingURL=oracledb.service.js.map

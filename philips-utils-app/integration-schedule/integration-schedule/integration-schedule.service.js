@@ -14,15 +14,24 @@ const common_1 = require("@nestjs/common");
 const schedule_1 = require("@nestjs/schedule");
 const azure_integration_controller_1 = require("../../controllers/azure-integration/azure-integration.controller");
 const oracledb_clinical_service_1 = require("../../services/oracledb-clinical/oracledb-clinical.service");
+const test_connection_service_1 = require("../../services/test-connection/test-connection.service");
 let IntegrationScheduleService = class IntegrationScheduleService {
-    constructor(azureIntegrationController, oracledbClinicalService) {
+    constructor(azureIntegrationController, oracledbClinicalService, testConnectionService) {
         this.azureIntegrationController = azureIntegrationController;
         this.oracledbClinicalService = oracledbClinicalService;
+        this.testConnectionService = testConnectionService;
     }
     handleCron() {
         if (process.env.PASS_AZURE) {
             this.azureIntegrationController.initAutoIntegration();
             console.log('feito');
+        }
+    }
+    async handleCronTesteConection() {
+        if (process.env.PASS_AZURE) {
+            const wheb = await this.testConnectionService.testConnectionWheb();
+            console.log('Teste de conexão =============================');
+            console.log(`WEB ${wheb}`);
         }
     }
     handleCronBackLogDef() {
@@ -37,6 +46,12 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], IntegrationScheduleService.prototype, "handleCron", null);
 __decorate([
+    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_MINUTES),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], IntegrationScheduleService.prototype, "handleCronTesteConection", null);
+__decorate([
     (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_30_MINUTES),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -45,7 +60,8 @@ __decorate([
 IntegrationScheduleService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [azure_integration_controller_1.AzureIntegrationController,
-        oracledb_clinical_service_1.OracledbClinicalService])
+        oracledb_clinical_service_1.OracledbClinicalService,
+        test_connection_service_1.TestConnectionService])
 ], IntegrationScheduleService);
 exports.IntegrationScheduleService = IntegrationScheduleService;
 //# sourceMappingURL=integration-schedule.service.js.map

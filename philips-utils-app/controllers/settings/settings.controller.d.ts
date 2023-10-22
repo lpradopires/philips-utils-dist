@@ -7,4 +7,5 @@ export declare class SettingsController {
     create(settingsData: Settings): Promise<any>;
     update(id: any, settingsData: Settings): Promise<any>;
     delete(id: any): Promise<any>;
+    findSelectedFields(requestData: any): Promise<any>;
 }

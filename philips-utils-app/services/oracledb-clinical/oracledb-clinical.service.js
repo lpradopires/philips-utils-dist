@@ -54,6 +54,59 @@ let OracledbClinicalService = class OracledbClinicalService {
             console.error(error);
         }
     }
+    async getLastVersions() {
+        try {
+            return await this.connectionOracleClinicalService
+                .getConnectOracleClinical()
+                .query(querys_1.Querys.GET_LAST_10_OFFICIAL);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getParamsObjeto(_nrSeqObjeto) {
+        const query = `select a.nm_parametro, a.ie_tipo_dado_param from OBJETO_SISTEMA_PARAM a where nr_seq_objeto = ${_nrSeqObjeto}`;
+        try {
+            return await this.connectionOracleClinicalService
+                .getConnectOracleClinical()
+                .query(query);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async getLogsTable(_nm_table_logs) {
+        const query = `select * from ${_nm_table_logs} order by id asc`;
+        try {
+            return await this.connectionOracleClinicalService
+                .getConnectOracleClinical()
+                .query(query);
+        }
+        catch (error) {
+            return error;
+        }
+    }
+    async runExecComand(_dsComand) {
+        try {
+            return await this.connectionOracleClinicalService
+                .getConnectOracleClinical()
+                .execute(_dsComand);
+        }
+        catch (error) {
+            return error.message;
+        }
+    }
+    async obterObjetosInvalidos() {
+        const query = `select count(*) num_objeto from objetos_invalidos_v`;
+        try {
+            return await this.connectionOracleClinicalService
+                .getConnectOracleClinical()
+                .query(query);
+        }
+        catch (error) {
+            return error;
+        }
+    }
 };
 OracledbClinicalService = __decorate([
     (0, common_1.Injectable)(),

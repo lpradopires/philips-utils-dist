@@ -1,0 +1,10 @@
+
+.custom-dropdown-width .p-dropdown-label {
+    min-width: 150px;
+}
+
+@media screen and (max-width: 768px) {
+    .custom-dropdown-width .p-dropdown-label {
+        min-width: 9.5vh;
+    }
+}

@@ -12,15 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DashBacklogController = void 0;
 const common_1 = require("@nestjs/common");
 const firebasedb_service_1 = require("../../services/firebasedb/firebasedb.service");
+const log_system_service_1 = require("../../services/log-system/log-system.service");
 const oracledb_clinical_service_1 = require("../../services/oracledb-clinical/oracledb-clinical.service");
 const oracledb_service_1 = require("../../services/oracledb-corp/oracledb.service");
 const time_service_1 = require("../../services/time/time.service");
 let DashBacklogController = class DashBacklogController {
-    constructor(oracledbService, firebasedbService, timeService, oracledbClinicalService) {
+    constructor(oracledbService, firebasedbService, timeService, oracledbClinicalService, logSystemService) {
         this.oracledbService = oracledbService;
         this.firebasedbService = firebasedbService;
         this.timeService = timeService;
         this.oracledbClinicalService = oracledbClinicalService;
+        this.logSystemService = logSystemService;
     }
     getBackLogMoment() {
         return this.oracledbService.getAllBacklog();
@@ -46,7 +48,8 @@ DashBacklogController = __decorate([
     __metadata("design:paramtypes", [oracledb_service_1.OracledbService,
         firebasedb_service_1.FirebasedbService,
         time_service_1.TimeService,
-        oracledb_clinical_service_1.OracledbClinicalService])
+        oracledb_clinical_service_1.OracledbClinicalService,
+        log_system_service_1.LogSystemService])
 ], DashBacklogController);
 exports.DashBacklogController = DashBacklogController;
 //# sourceMappingURL=dash-backlog.controller.js.map
